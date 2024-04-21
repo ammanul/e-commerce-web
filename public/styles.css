@@ -302,6 +302,8 @@ header {
   min-height: 100vh;
   background: linear-gradient(rgba(63, 208, 212, 0.5), rgba(0, 0, 0, 0.7)),
     url(./hero-bcg.jpeg) center/cover no-repeat;
+    background-position: center;
+    background-size: 100%;
 }
 .banner {
   min-height: 100vh;
