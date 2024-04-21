@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const expressLayouts = require('express-ejs-layouts')
-const router = require('./public/routes/backend')
+const router = require('./routes')
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/index')
