@@ -1,0 +1,183 @@
+Certainly! Here's an updated version of the code that retrieves the menu data from a MongoDB Atlas database using Node.js and Express:
+
+```javascript
+const express = require('express');
+const { MongoClient } = require('mongodb');
+
+const app = express();
+const port = 3000;
+
+// Connection URI
+const uri = 'mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retryWrites=true&w=majority';
+
+// Route to retrieve menu data
+app.get('/api/v1/menu', async (req, res) => {
+  try {
+    // Create a new MongoClient
+    const client = new MongoClient(uri);
+
+    // Connect to the MongoDB cluster
+    await client.connect();
+
+    // Connected successfully to the MongoDB cluster
+    console.log('Connected to MongoDB Atlas');
+
+    // Get a reference to the menu collection
+    const db = client.db('<database-name>');
+    const menuCollection = db.collection('menu');
+
+    // Retrieve the menu items from the collection
+    const menu = await menuCollection.find().toArray();
+
+    // Close the connection to the MongoDB cluster
+    client.close();
+
+    res.json(menu);
+  } catch (error) {
+    console.error('Error retrieving menu data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
+```
+
+Replace `<username>`, `<password>`, `<cluster-url>`, and `<database-name>` in the connection string with your actual MongoDB Atlas credentials and details.
+
+In this updated code:
+
+1. We import the `express` and `mongodb` modules.
+
+2. We create an instance of the `express` application and set the port to `3000`.
+
+3. We define a route (`/api/v1/menu`) to handle GET requests for retrieving the menu data.
+
+4. In the route handler, we create a new `MongoClient` and connect to the MongoDB cluster using the connection string.
+
+5. Once connected, we get a reference to the `menu` collection in the specified database.
+
+6. We use the `find` method to retrieve all the documents from the `menu` collection and convert the result to an array.
+
+7. After retrieving the menu data, we close the connection to the MongoDB cluster.
+
+8. Finally, we send the retrieved menu data as a JSON response to the client.
+
+9. The server listens on the specified port (`3000`) for incoming requests.
+
+Make sure to replace the connection string and `<database-name>` with your actual MongoDB Atlas credentials and database name.
+
+To run this code, save it to a file (e.g., `app.js`), install the required dependencies (`express` and `mongodb`), and run the application using Node.js by executing the following command in your project directory:
+```
+node app.js
+```
+
+Now, when you access `http://localhost:3000/api/v1/menu`, you should see the menu data retrieved from the MongoDB Atlas database.
+
+
+
+
+
+
+
+
+
+
+
+
+To retrieve the menu data from a database and update the code accordingly, you would need to make changes to the `diplayMenuItems` and `displayMenuButtons` functions. Here's the modified code:
+
+```javascript
+// get parent element
+const sectionCenter = document.querySelector(".section-center");
+const btnContainer = document.querySelector(".btn-container");
+
+// display all items when page loads
+window.addEventListener("DOMContentLoaded", async function () {
+  try {
+    // Fetch the menu data from the database
+    const response = await fetch('/api/v1/menu');
+    const menu = await response.json();
+
+    diplayMenuItems(menu);
+    displayMenuButtons(menu);
+  } catch (error) {
+    console.error("Error fetching menu data:", error);
+  }
+});
+
+function diplayMenuItems(menuItems) {
+  let displayMenu = menuItems.map(function (item) {
+    return `<article class="menu-item">
+      <img src=${item.img} alt=${item.title} class="photo" />
+      <div class="item-info">
+        <header>
+          <h4>${item.title}</h4>
+          <h4 class="price">$${item.price}</h4>
+        </header>
+        <p class="item-text">
+          ${item.desc}
+        </p>
+      </div>
+    </article>`;
+  });
+  displayMenu = displayMenu.join("");
+
+  sectionCenter.innerHTML = displayMenu;
+}
+
+function displayMenuButtons(menuItems) {
+  const categories = menuItems.reduce(
+    function (values, item) {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      return values;
+    },
+    ["all"]
+  );
+
+  const categoryBtns = categories
+    .map(function (category) {
+      return `<button type="button" class="filter-btn" data-id=${category}>
+        ${category}
+      </button>`;
+    })
+    .join("");
+
+  btnContainer.innerHTML = categoryBtns;
+
+  const filterBtns = btnContainer.querySelectorAll(".filter-btn");
+
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      const category = e.currentTarget.dataset.id;
+
+      const menuCategory = menuItems.filter(function (menuItem) {
+        if (menuItem.category === category || category === "all") {
+          return menuItem;
+        }
+      });
+
+      diplayMenuItems(menuCategory);
+    });
+  });
+}
+```
+
+In the modified code:
+
+1. The `window.addEventListener("DOMContentLoaded", ...)` function is wrapped in an `async` function to enable the use of the `await` keyword for fetching the menu data.
+
+2. Inside the `try` block, we fetch the menu data from the `/api/v1/menu` endpoint, assuming it is the endpoint that retrieves the menu data from the database.
+
+3. We parse the response body as JSON and store the menu data in the `menu` variable.
+
+4. We pass the `menu` data to the `diplayMenuItems` and `displayMenuButtons` functions to populate the menu items and buttons accordingly.
+
+5. In the `displayMenuButtons` function, we modify the `categories` array to be derived from the `menuItems` parameter instead of the `menu` array.
+
+6. The event listener for the filter buttons (`filterBtns`) is updated to use the `menuItems` parameter instead of the `menu` array.
+
+Make sure your server is properly set up to handle the GET request to `/api/v1/menu` and respond with the menu data from the database.
