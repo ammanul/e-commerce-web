@@ -300,10 +300,9 @@ nav {
 /* hero */
 header {
   min-height: 100vh;
-  background: linear-gradient(rgba(63, 208, 212, 0.5), rgba(0, 0, 0, 0.7)),
-    url(./hero-bcg.jpeg) center/cover no-repeat;
+  background-image: url(./hero-bcg.jpeg);
     background-position: center;
-    background-size: 100%;
+    background-size: 50%;
 }
 .banner {
   min-height: 100vh;
