@@ -299,7 +299,9 @@ nav {
 }
 /* hero */
 header{
-  background-color: black;
+  background-image: url(hero-bcg.jpg) ;
+  background-position: center;
+  background-size: 100%;
 }
 .banner {
   min-height: 100vh;
