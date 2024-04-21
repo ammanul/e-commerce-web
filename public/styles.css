@@ -298,11 +298,8 @@ nav {
   }
 }
 /* hero */
-header {
-  min-height: 100vh;
-  background-image: url(hero-bcg.jpg);
-    background-position: center;
-    background-size: 50%;
+header{
+  background-color: black;
 }
 .banner {
   min-height: 100vh;
