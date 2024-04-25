@@ -298,11 +298,63 @@ nav {
     color: var(--clr-white);
   }
 }
+
+/*
+=============== 
+Video
+===============
+*/
+/* .preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--clr-white);
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  visibility: visible;
+  z-index: 999;
+  transition: var(--transition);
+}
+
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+} */
+
+#about {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  margin-top: 20px;
+}
+
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}
+
 /* hero */
 header{
   background-image: url(hero-bcg.jpg) ;
   background-position: center;
-  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: auto
+
 }
 .banner {
   min-height: 100vh;
